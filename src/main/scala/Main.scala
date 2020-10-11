@@ -6,6 +6,7 @@ object Main {
     println("hello")
     println("another hello")
     println("and another one again bro")
+    println("hi!")
 
   }
 
