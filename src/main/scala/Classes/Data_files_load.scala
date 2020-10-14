@@ -2,6 +2,10 @@ package Classes
 import org.apache.spark
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
+import org.apache.spark.sql.catalyst.dsl.expressions.StringToAttributeConversionHelper
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.{ArrayType, StringType}
+
 
 
 object Data_files_load{
@@ -16,10 +20,10 @@ object Data_files_load{
 }
 
 class Data_files_load(filename:String) {
-  this set_sessio_and_ignore_warnings()
+  this set_session_and_ignore_warnings()
   var spark_session:org.apache.spark.sql.SparkSession = Data_files_load.set_spark()
 
-  def set_sessio_and_ignore_warnings(){
+  def set_session_and_ignore_warnings(){
     Logger.getLogger("org").setLevel(Level.OFF)
     Logger.getLogger("akka").setLevel(Level.OFF)
   }
@@ -33,6 +37,22 @@ class Data_files_load(filename:String) {
       .toDF()
     return df
   }
+
+  def load_json(): org.apache.spark.sql.DataFrame ={
+    val df = this.spark_session.read
+      .format("json")
+      .option("header", "true") //first line in file has headers
+      .option("mode", "DROPMALFORMED")
+      .load(this.filename)//hdfs:///csv/file/dir/file.csv
+      .toDF()
+      .cache()
+
+    return df.select("attributes.att-a","attributes.att-b","attributes.att-c","attributes.att-d","attributes.att-e","attributes.att-f","attributes.att-g","attributes.att-h","attributes.att-i","attributes.att-j","sku")
+  }
+
+
+
+
 
 
 
