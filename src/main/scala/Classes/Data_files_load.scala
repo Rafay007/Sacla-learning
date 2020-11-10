@@ -11,7 +11,7 @@ import org.apache.spark.sql.types.{ArrayType, StringType}
 object Data_files_load{
   private def  set_spark():org.apache.spark.sql.SparkSession = {
    val spark = org.apache.spark.sql.SparkSession.builder
-      .master("local")
+      .master("127.0.0.1:7077")
       .appName("Spark CSV Reader")
       .getOrCreate;
 
